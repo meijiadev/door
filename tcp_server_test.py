@@ -5,18 +5,19 @@ import socket
 import threading
 import constant
 import matplotlib.pyplot as plt
+# 设置刻度值之间步长(间隔)
+from matplotlib.pyplot import MultipleLocator
 
 # 创建一个折线图
-fig = plt.figure(figsize=(16, 8), dpi=100)
+fig = plt.figure(figsize=(16, 12), dpi=120)
 # 设置中文语言
 plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
 plt.rcParams['axes.unicode_minus'] = False
-
 # 创建两个表格，211代表创建2行1列，当前在1的位置
-ax = fig.add_subplot(4, 1, 1)             #4区
-bx = fig.add_subplot(4, 1, 2)             #13
-cx = fig.add_subplot(4, 2, 1)             #3区
-dx = fig.add_subplot(4, 2, 2)             #14区
+ax = fig.add_subplot(2, 2, 1)  # 4区
+bx = fig.add_subplot(2, 2, 2)  # 13
+cx = fig.add_subplot(2, 2, 3)  # 3区
+dx = fig.add_subplot(2, 2, 4)  # 14区
 
 
 # 定义个函数,使其专门重复处理客户的请求数据（也就是重复接受一个用户的消息并且重复回答，直到用户选择下线）
@@ -55,14 +56,14 @@ def dispose_client_request(tcp_client_1, tcp_client_address):
                                         ax.plot(list(range(len(constant.m4))), constant.m4, '-r', label='4区')
                                     if str_3 == '0d':
                                         constant.m13.append(data)
-                                        bx.plot(list(range(len(constant.m13))), constant.m13, '-b', label='13区')
+                                        bx.plot(list(range(len(constant.m13))), constant.m13, '-g', label='13区')
                                     if str_3 == '03':
                                         constant.m2.append(data)
-                                        cx.plot(list(range(len(constant.m2))), constant.m2, '-g', label='2区')
+                                        cx.plot(list(range(len(constant.m2))), constant.m2, '-r', label='2区')
                                     if str_3 == '0e':
                                         print("第14区间16进制转10进制：%s-%d", (msg_data, data))
                                         constant.m15.append(data)
-                                        dx.plot(list(range(len(constant.m15))), constant.m15, '-y', label='14区')
+                                        dx.plot(list(range(len(constant.m15))), constant.m15, '-g', label='14区')
 
         else:
             print("%s 客户端下线了..." % tcp_client_address[1])
@@ -85,6 +86,14 @@ def initPlt():
     bx.set_ylabel('13区', rotation=0, fontsize=16, labelpad=20)
     cx.set_ylabel('3区', rotation=0, fontsize=16, labelpad=20)
     dx.set_ylabel('14区', rotation=0, fontsize=16, labelpad=20)
+    ax.yaxis.set_major_locator(MultipleLocator(2000))
+    bx.yaxis.set_major_locator(MultipleLocator(2000))
+    cx.yaxis.set_major_locator(MultipleLocator(2000))
+    dx.yaxis.set_major_locator(MultipleLocator(2000))
+    ax.set_ylim(0, 30000)
+    bx.set_ylim(0, 30000)
+    cx.set_ylim(0, 30000)
+    dx.set_ylim(0, 30000)
     ax.grid(True)
     bx.grid(True)
     cx.grid(True)
