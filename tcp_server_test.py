@@ -7,6 +7,7 @@ import constant
 import matplotlib.pyplot as plt
 # 设置刻度值之间步长(间隔)
 from matplotlib.pyplot import MultipleLocator
+import tensorflow as tf
 
 # 创建一个折线图
 fig = plt.figure(figsize=(16, 12), dpi=120)
@@ -50,8 +51,6 @@ def dispose_client_request(tcp_client_1, tcp_client_address):
                                 if len(msg_data) != 0:
                                     data = int(msg_data, 16)
                                     if str_3 == '04':
-                                        #  curDate=datetime.now()
-                                        # print("第四区间16进制转10进制：%s-%d", (msg_data, data))
                                         constant.m4.append(data)
                                         ax.plot(list(range(len(constant.m4))), constant.m4, '-r', label='4区')
                                     if str_3 == '0d':
@@ -90,10 +89,10 @@ def initPlt():
     bx.yaxis.set_major_locator(MultipleLocator(2000))
     cx.yaxis.set_major_locator(MultipleLocator(2000))
     dx.yaxis.set_major_locator(MultipleLocator(2000))
-    ax.set_ylim(0, 30000)
-    bx.set_ylim(0, 30000)
-    cx.set_ylim(0, 30000)
-    dx.set_ylim(0, 30000)
+    ax.set_ylim(0, 70000)
+    bx.set_ylim(0, 70000)
+    cx.set_ylim(0, 70000)
+    dx.set_ylim(0, 70000)
     ax.grid(True)
     bx.grid(True)
     cx.grid(True)
@@ -113,7 +112,6 @@ if __name__ == '__main__':
     # 3 设置监听
     tcp_server.listen(5)
 
-    # plt.ion()
     # 4 循环等待客户端连接请求（也就是最多可以同时有5个用户连接到服务器进行通信）
     while True:
         tcp_client_1, tcp_client_address = tcp_server.accept()
